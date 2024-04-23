@@ -86,7 +86,7 @@ public class PlayerMovement : MonoBehaviour
 
     public bool IsGrounded()
     { 
-        float rayLength = 1.1f;
+        float rayLength = 0.4f;
         int layerMask = 1 << 6;
         if (Physics2D.Raycast(transform.position, Vector2.down, rayLength, layerMask))
         {
