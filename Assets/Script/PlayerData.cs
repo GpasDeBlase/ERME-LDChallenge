@@ -35,7 +35,7 @@ public class PlayerData : MonoBehaviour
             checkpos = collider.transform.position;
         }
 
-        //Entre dans un piège
+        // Entre dans un piège
         if (collider.gameObject.layer == 8)
         {
             StartCoroutine(dieAndRespawn());  
