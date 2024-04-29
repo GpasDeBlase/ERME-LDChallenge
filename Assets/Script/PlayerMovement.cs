@@ -8,21 +8,21 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float moveSpeed;
     private Rigidbody2D rb;
     private float horizontalInput;
-    private float speed;
+    private float speed = 7;
     private SpriteRenderer sr;
     private Color basecolor;
     // Jump variables
     [SerializeField] private int jumpNbr = 1;
-    [SerializeField] private int jumpForce;
+    [SerializeField] private int jumpForce = 5;
     private Vector2 drawCenter;
     private int jumpCount = 0;
     
     
 
     [Header("Dash Settings")]
-    [SerializeField] private float dashLength = .5f; 
-    [SerializeField] private float dashCD = 1f;
-    [SerializeField] private float dashSpeed;
+    [SerializeField] private float dashLength = .3f; 
+    [SerializeField] private float dashCD = 0.5f;
+    [SerializeField] private float dashSpeed = 14;
     private int dashCount = 0;
     private int dashNbr = 1;
     private bool canDash;
@@ -100,7 +100,7 @@ public class PlayerMovement : MonoBehaviour
     { 
         // Attendre la fin du dash
         yield return new WaitForSeconds(dashLength);
-        speed = moveSpeed;
+        speed = moveSpeed;  
         rb.constraints = RigidbodyConstraints2D.FreezeRotation;
         sr.color = basecolor;
 
