@@ -31,6 +31,7 @@ public class PlayerMovement : MonoBehaviour
     private float horizontalInput;
     private float verticalInput;
     private Rigidbody2D rb;
+    public GameObject _ui;
 
     void Start()
     {
@@ -41,6 +42,7 @@ public class PlayerMovement : MonoBehaviour
         dashCount = dashNbr;
         speed = moveSpeed;
         canDash = true;
+        _ui.SetActive(false);
     }
 
 
@@ -48,19 +50,13 @@ public class PlayerMovement : MonoBehaviour
     {
         // Deplacement 
         if (_debug == false)
-        {
-            gameObject.GetComponent<BoxCollider2D>().enabled = true;
-            sr.color = basecolor;
-            rb.gravityScale = 1;
+        {        
             horizontalInput = Input.GetAxis("Horizontal");
             rb.velocity = new Vector2(horizontalInput * speed, rb.velocity.y);
         }
 
         if (_debug == true) 
         {
-            gameObject.GetComponent<BoxCollider2D>().enabled = false;
-            rb.gravityScale = 0;
-            sr.color = new Color(0.5f, 0.5f, 0.5f, 1);
             horizontalInput = Input.GetAxis("Horizontal");
             verticalInput = Input.GetAxis("Vertical");
             rb.velocity = new Vector2(horizontalInput * speed, verticalInput * speed);
@@ -88,7 +84,7 @@ public class PlayerMovement : MonoBehaviour
             }
         if (Input.GetButtonDown("Dash"))
         {
-            if (canDash && dashCount > 0)
+            if (canDash && _debug==false && dashCount > 0)
             {
                 canDash = false;
                 speed = dashSpeed;
@@ -104,6 +100,22 @@ public class PlayerMovement : MonoBehaviour
         if(Input.GetButtonDown("Debug"))
         {
             _debug =  !_debug;
+            if (_debug == true)
+            {
+                gameObject.GetComponent<BoxCollider2D>().enabled = false;
+                sr.color = new Color(0.5f, 0.5f, 0.5f, 1);
+                rb.gravityScale = 0;
+                _ui.SetActive(true);
+            }
+                
+            if (_debug == false) 
+            {
+                rb.gravityScale = 1;
+                gameObject.GetComponent<BoxCollider2D>().enabled = true;
+                sr.color = basecolor;
+                _ui.SetActive(false);
+            }
+
             //Debug.Log("debug mode");
         }
 
