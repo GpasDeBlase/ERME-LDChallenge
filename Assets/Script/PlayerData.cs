@@ -45,6 +45,8 @@ public class PlayerData : MonoBehaviour
         if (affUI == true) uiCommande.SetActive(true);
         if (affUI == false) uiCommande.SetActive(false);
 
+        if (Input.GetKeyDown(KeyCode.Escape)) Application.Quit();
+
 
         if (Input.GetKeyDown(KeyCode.Alpha1)) transform.position = new Vector3(0f, 1f, 0f) + checkpoints[0].transform.position;
         if (Input.GetKeyDown(KeyCode.Alpha2)) transform.position = new Vector3(0f, 1f, 0f) + checkpoints[1].transform.position;
