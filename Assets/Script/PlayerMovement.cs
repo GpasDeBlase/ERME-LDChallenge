@@ -6,18 +6,17 @@ public class PlayerMovement : MonoBehaviour
 {
     [Header ("Movement Settings")]
     [SerializeField] private float moveSpeed;
-    private Rigidbody2D rb;
-    private float horizontalInput;
     private float speed = 7;
     private SpriteRenderer sr;
     private Color basecolor;
+    
     // Jump variables
     [SerializeField] private int jumpNbr = 1;
     [SerializeField] private int jumpForce = 5;
+    [SerializeField] private int trampoJump = 10;
     private Vector2 drawCenter;
     private int jumpCount = 0;
-    
-    
+
 
     [Header("Dash Settings")]
     [SerializeField] private float dashLength = .3f; 
@@ -27,8 +26,11 @@ public class PlayerMovement : MonoBehaviour
     private int dashNbr = 1;
     private bool canDash;
 
-    
-
+    // Variables
+    private bool _debug = false;
+    private float horizontalInput;
+    private float verticalInput;
+    private Rigidbody2D rb;
 
     void Start()
     {
@@ -39,16 +41,32 @@ public class PlayerMovement : MonoBehaviour
         dashCount = dashNbr;
         speed = moveSpeed;
         canDash = true;
-        
-
     }
 
 
     void Update()
     {
-        // Deplacement horizontal
-        horizontalInput = Input.GetAxis("Horizontal");
-        rb.velocity = new Vector2(horizontalInput * speed, rb.velocity.y);
+        // Deplacement 
+        if (_debug == false)
+        {
+            gameObject.GetComponent<BoxCollider2D>().enabled = true;
+            sr.color = basecolor;
+            rb.gravityScale = 1;
+            horizontalInput = Input.GetAxis("Horizontal");
+            rb.velocity = new Vector2(horizontalInput * speed, rb.velocity.y);
+        }
+
+        if (_debug == true) 
+        {
+            gameObject.GetComponent<BoxCollider2D>().enabled = false;
+            rb.gravityScale = 0;
+            sr.color = new Color(0.5f, 0.5f, 0.5f, 1);
+            horizontalInput = Input.GetAxis("Horizontal");
+            verticalInput = Input.GetAxis("Vertical");
+            rb.velocity = new Vector2(horizontalInput * speed, verticalInput * speed);
+
+        }
+
 
         // Saut
         if (Input.GetButtonDown("Jump"))
@@ -82,6 +100,13 @@ public class PlayerMovement : MonoBehaviour
 
         }
 
+        // DEBUG
+        if(Input.GetButtonDown("Debug"))
+        {
+            _debug =  !_debug;
+            //Debug.Log("debug mode");
+        }
+
     }
 
     public bool IsGrounded()
@@ -94,6 +119,15 @@ public class PlayerMovement : MonoBehaviour
         }
         return false;
         
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.gameObject.layer==9)
+        {
+            rb.velocity = Vector2.zero;
+            rb.AddForce(Vector2.up * trampoJump, ForceMode2D.Impulse);
+        }
     }
 
     IEnumerator dash()

@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerData : MonoBehaviour
 {
     private Vector2 checkpos;
+    private Vector2 startPos;
     private Rigidbody2D rb;
     private SpriteRenderer sr;
     private Color basecolor;
@@ -15,6 +16,7 @@ public class PlayerData : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         basecolor = sr.color;
+        startPos = transform.localPosition;
         
     }
 
@@ -23,7 +25,7 @@ public class PlayerData : MonoBehaviour
     {
         if (Input.GetButtonDown("Respawn"))
         {
-            transform.position = checkpos + new Vector2(0f,1f);
+            transform.position = startPos + new Vector2(0f,1f);
         }
     }
 
